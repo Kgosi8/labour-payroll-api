@@ -1,0 +1,19 @@
+.wrap {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+}
+
+.box {
+  width: 100%;
+  max-width: 380px;
+
+  p {
+    margin: 4px 0 18px;
+  }
+}
+
+.full {
+  width: 100%;
+  margin-top: 6px;
+}

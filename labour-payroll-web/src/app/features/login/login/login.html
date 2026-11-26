@@ -1,0 +1,35 @@
+<div class="wrap">
+  <form class="card box" (submit)="submit($event)">
+    <h1>Labour Payroll</h1>
+    <p class="muted">Sign in to continue.</p>
+
+    <label class="field">
+      <span>Email</span>
+      <input
+        type="email"
+        autocomplete="username"
+        inputmode="email"
+        [value]="form().email"
+        (input)="updateField('email', $event)"
+      />
+    </label>
+
+    <label class="field">
+      <span>Password</span>
+      <input
+        type="password"
+        autocomplete="current-password"
+        [value]="form().password"
+        (input)="updateField('password', $event)"
+      />
+    </label>
+
+    @if (error()) {
+      <p class="alert">{{ error() }}</p>
+    }
+
+    <button class="btn primary full" type="submit" [disabled]="busy()">
+      {{ busy() ? 'Signing in…' : 'Sign in' }}
+    </button>
+  </form>
+</div>
