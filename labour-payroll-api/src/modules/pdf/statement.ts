@@ -4,8 +4,9 @@ import type {
   TDocumentDefinitions,
 } from "pdfmake/interfaces";
 import { formatRand } from "../../utils/money";
-import { monthLabel } from "./reference";
+
 import { renderPdf } from "./render";
+import { monthLabel } from "./references";
 
 export interface StatementLine {
   completedOn: string; // pre-formatted

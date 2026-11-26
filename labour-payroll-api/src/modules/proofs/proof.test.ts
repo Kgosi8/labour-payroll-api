@@ -1,8 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildReference, monthLabel } from "./reference";
-import { renderBankSchedule } from "./bankSchedule";
-import { renderStatements } from "./statement";
+import { buildReference, monthLabel } from "../pdf/references";
+import { renderBankSchedule } from "../pdf/bankSchedule";
+import { renderStatements } from "../pdf/statement";
+
 
 test("reference is within 20 chars and clean", () => {
   const r = buildReference("2026-11", "Johannes", "van der Merwe");

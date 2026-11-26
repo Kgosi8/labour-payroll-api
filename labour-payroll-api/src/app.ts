@@ -3,8 +3,9 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import { env } from "./config/env";
-import { routes } from "./routes";
+
 import { errorHandler, notFound } from "./middleware/errorHandler";
+import { routes } from "./routes";
 
 export function createApp() {
   const app = express();

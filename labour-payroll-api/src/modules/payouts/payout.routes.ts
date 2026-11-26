@@ -4,7 +4,7 @@ import { AppError } from '../../utils/AppError';
 import { monthParam, objectId } from '../../utils/validation';
 import { Payout } from './payout.model';
 import { approveMonth, generateDrafts } from './payout.service';
-import { singleStatementPdf } from '../payment-runs/payment-run.service';
+import { singleStatementPdf } from '../payment-runs/payment.service'
 import { sendPdf } from '../payment-runs/payment-run.routes';
 
 // Salary data: admin only.

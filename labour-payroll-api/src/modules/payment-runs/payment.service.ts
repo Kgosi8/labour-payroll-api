@@ -9,9 +9,9 @@ import { bankProblems } from "../workers/worker.service";
 import { decrypt } from "../../utils/crypto";
 import { renderBankSchedule, type BankScheduleRow } from "../pdf/bankSchedule";
 import { renderStatements, type StatementData } from "../pdf/statement";
-import { buildReference } from "../pdf/reference";
-import { PaymentProof } from "../proofs/proof.model";
 import { PaymentRun } from "./payment-run.model";
+import { buildReference } from "../pdf/references";
+import { PaymentProof } from "../proofs/proof.model";
 
 type PayoutDoc = InstanceType<typeof Payout>;
 

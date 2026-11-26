@@ -2,10 +2,10 @@ import { AppError } from "../../utils/AppError";
 import { monthKey } from "../../utils/month";
 import { audit } from "../audit/audit.service";
 import { getSettingsOrThrow } from "../settings/settings.service";
-import { Payout } from "../payouts/payout.model";
 import { missingPositions } from "../payouts/split";
 import { House } from "./house.model";
 import { HouseAssignment } from "./assignment.model";
+import { Payout } from "../payouts/payout.model";
 
 export async function completeHouse(houseId: string, userId: string) {
   const house = await House.findById(houseId);
