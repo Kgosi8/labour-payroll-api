@@ -1,0 +1,90 @@
+<div class="head">
+  <h1>Settings</h1>
+</div>
+
+@if (loading()) {
+  <p class="muted">Loading…</p>
+} @else {
+  <form class="card" (submit)="save($event)">
+    <h3 class="first">Company</h3>
+    <div class="grid2">
+      <label class="field">
+        <span>Company name</span>
+        <input
+          type="text"
+          [value]="form().companyName"
+          (input)="updateField('companyName', $event)"
+        />
+      </label>
+      <label class="field">
+        <span>Amount paid per completed house (Rand)</span>
+        <input
+          type="text"
+          inputmode="decimal"
+          placeholder="0.00"
+          [value]="form().rate"
+          (input)="updateField('rate', $event)"
+        />
+      </label>
+    </div>
+
+    <h3>Position shares</h3>
+    <p class="muted hint">
+      Each completed house is split between these positions. If several workers share a position,
+      they split its share equally. The percentages must add up to 100%.
+    </p>
+
+    @for (p of positions(); track $index) {
+      <div class="pos-row">
+        <label class="field name">
+          <span>Position</span>
+          <input
+            type="text"
+            placeholder="e.g. Bricklayer"
+            [value]="p.name"
+            (input)="updatePosition($index, 'name', $event)"
+          />
+        </label>
+        <label class="field pct">
+          <span>Share %</span>
+          <input
+            type="text"
+            inputmode="decimal"
+            placeholder="0"
+            [value]="p.pct"
+            (input)="updatePosition($index, 'pct', $event)"
+          />
+        </label>
+        <button
+          class="btn ghost small remove"
+          type="button"
+          aria-label="Remove position"
+          [disabled]="positions().length === 1"
+          (click)="removePosition($index)"
+        >
+          ✕
+        </button>
+      </div>
+    }
+
+    <div class="total" [class.bad]="totalBps() !== 10000">Total: {{ totalPct() }}%</div>
+
+    <button class="btn ghost small" type="button" (click)="addPosition()">+ Add position</button>
+
+    @if (error()) {
+      <p class="alert top">{{ error() }}</p>
+    }
+    @if (saved()) {
+      <p class="notice top">Settings saved.</p>
+    }
+
+    <div class="sheet-foot">
+      @if (problem()) {
+        <span class="muted problem">{{ problem() }}</span>
+      }
+      <button class="btn primary" type="submit" [disabled]="saving() || !!problem()">
+        {{ saving() ? 'Saving…' : 'Save settings' }}
+      </button>
+    </div>
+  </form>
+}

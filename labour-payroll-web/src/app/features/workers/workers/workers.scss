@@ -1,0 +1,57 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+
+  input,
+  select {
+    font: inherit;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .search {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  align-items: center;
+
+  .who {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.first {
+  margin-top: 4px;
+}
+.hint {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 720px) {
+  .row {
+    grid-template-columns: 1fr auto auto;
+
+    .actions {
+      grid-column: auto;
+    }
+  }
+}

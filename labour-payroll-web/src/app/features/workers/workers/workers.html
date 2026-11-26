@@ -1,0 +1,147 @@
+<div class="head">
+  <h1>Workers</h1>
+  @if (auth.isAdmin()) {
+    <button class="btn primary" type="button" (click)="openNew()">+ Add worker</button>
+  }
+</div>
+
+<div class="filters">
+  <input
+    class="search"
+    type="search"
+    placeholder="Search name, phone, city or bank"
+    [value]="search()"
+    (input)="updateSearch($event)"
+  />
+  <select class="status" aria-label="Status" [value]="status()" (change)="updateStatus($event)">
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+    <option value="all">All</option>
+  </select>
+</div>
+
+@if (loading()) {
+  <p class="muted">Loading…</p>
+} @else if (listError()) {
+  <p class="alert">{{ listError() }}</p>
+} @else {
+  <ul class="list">
+    @for (w of visible(); track w.id) {
+      <li class="card row">
+        <div class="who">
+          <strong>{{ w.lastName }}, {{ w.firstName }}</strong>
+          <span class="muted">{{ w.phone || 'No phone' }} · {{ w.address.city }}</span>
+          @if (w.bank) {
+            <span class="muted">{{ w.bank.bankName }} ••••{{ w.bank.accountLast4 }}</span>
+          }
+        </div>
+        <span class="badge" [class.off]="w.status === 'inactive'">{{ w.status }}</span>
+        @if (auth.isAdmin()) {
+          <div class="actions">
+            <button class="btn ghost small" type="button" (click)="openEdit(w)">Edit</button>
+            <button class="btn ghost small" type="button" (click)="toggleStatus(w)">
+              {{ w.status === 'active' ? 'Deactivate' : 'Reactivate' }}
+            </button>
+          </div>
+        }
+      </li>
+    } @empty {
+      <li class="empty">No workers found.</li>
+    }
+  </ul>
+}
+
+@if (sheetOpen()) {
+  <div class="overlay" (click)="closeSheet()">
+    <form class="card sheet" (click)="$event.stopPropagation()" (submit)="save($event)">
+      <div class="sheet-head">
+        <h2>{{ editingId() ? 'Edit worker' : 'Add worker' }}</h2>
+        <button class="btn ghost small" type="button" (click)="closeSheet()">Close</button>
+      </div>
+
+      @if (detailLoading()) {
+        <p class="muted">Loading details…</p>
+      } @else {
+        <h3 class="first">Personal</h3>
+        <div class="grid2">
+          @for (f of personalFields; track f.key) {
+            <label class="field">
+              <span>{{ f.label }}</span>
+              <input
+                [type]="f.type ?? 'text'"
+                [attr.inputmode]="f.inputmode ?? null"
+                [value]="form()[f.key]"
+                (input)="updateField(f.key, $event)"
+              />
+              @if (submitted() && errors()[f.key]) {
+                <small class="error">{{ errors()[f.key] }}</small>
+              }
+            </label>
+          }
+        </div>
+
+        <h3>Address</h3>
+        <div class="grid2">
+          @for (f of addressFields; track f.key) {
+            <label class="field">
+              <span>{{ f.label }}</span>
+              <input
+                type="text"
+                [attr.inputmode]="f.inputmode ?? null"
+                [value]="form()[f.key]"
+                (input)="updateField(f.key, $event)"
+              />
+              @if (submitted() && errors()[f.key]) {
+                <small class="error">{{ errors()[f.key] }}</small>
+              }
+            </label>
+          }
+        </div>
+
+        <h3>Bank details</h3>
+        <p class="muted hint">Encrypted when saved. Only admins can see them.</p>
+        <div class="grid2">
+          @for (f of bankFields; track f.key) {
+            <label class="field">
+              <span>{{ f.label }}</span>
+              <input
+                type="text"
+                [attr.list]="f.list ?? null"
+                [attr.inputmode]="f.inputmode ?? null"
+                [value]="form()[f.key]"
+                (input)="updateField(f.key, $event)"
+              />
+              @if (submitted() && errors()[f.key]) {
+                <small class="error">{{ errors()[f.key] }}</small>
+              }
+            </label>
+          }
+          <label class="field">
+            <span>Account type</span>
+            <select [value]="form().accountType" (change)="updateField('accountType', $event)">
+              <option value="savings">Savings</option>
+              <option value="cheque">Cheque / current</option>
+              <option value="transmission">Transmission</option>
+            </select>
+          </label>
+        </div>
+        <datalist id="banks">
+          @for (b of banks; track b) {
+            <option [value]="b"></option>
+          }
+        </datalist>
+
+        @if (formError()) {
+          <p class="alert">{{ formError() }}</p>
+        }
+
+        <div class="sheet-foot">
+          <button class="btn ghost" type="button" (click)="closeSheet()">Cancel</button>
+          <button class="btn primary" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : editingId() ? 'Save changes' : 'Add worker' }}
+          </button>
+        </div>
+      }
+    </form>
+  </div>
+}
